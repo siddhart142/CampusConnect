@@ -1,3 +1,3 @@
-const DB_NAME = "Campus Connect"
+const DB_NAME = "CampusConnect"
 
 export {DB_NAME}

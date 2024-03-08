@@ -1,12 +1,13 @@
 import dotenv from "dotenv"
-
-import app from "./app.js";
-import connectDB from "./db/index.js";
-
 dotenv.config({
     path : './.env'
 })
-// console.log("env+ ",process.env.CORS_ORIGIN)
+import app from "./app.js";
+
+import connectDB from "./db/index.js";
+
+
+console.log("env+ ",process.env.CORS_ORIGIN,process.env.EMAIL)
 
 connectDB()
 .then(()=>{
