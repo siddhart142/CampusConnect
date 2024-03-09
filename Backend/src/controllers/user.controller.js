@@ -67,7 +67,7 @@ const registeruser = asyncHandler(async (req,res) => {
 
 const verifyOtp = asyncHandler(async (req, res) => {
     // const { userId } = req.params;
-    const {userId, otp } = req.body;
+    const {userId,otp } = req.body;
     console.log(userId)
 
     const user = await User.findById(userId).select("-password -refreshToken");
