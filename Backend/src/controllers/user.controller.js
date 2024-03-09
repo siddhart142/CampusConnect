@@ -181,4 +181,100 @@ const logoutUser = asyncHandler(async(req,res)=> {
             new ApiResponse(200, {}, "User Logged Out")
         );
 })
-export {registeruser,verifyOtp,loginUser,logoutUser}
+
+const changePassword = asyncHandler(async(req,res)=>{
+
+    const {email, oldPassword, newPassword} = req.body
+
+    if(!email || newPassword){
+        throw ApiError(401,"email and password is required")
+    }
+
+    const user = await User.findOne(email)
+
+    if(!user){
+        throw new ApiError(404,"Email not found")
+    }
+
+    user.password = newPassword;
+    await user.save({ validateBeforeSave: false });
+
+    return res.status(200)
+    .json(
+        new ApiResponse(200,{
+            user,
+        },
+        "Password Changed Successfully")
+    )
+
+})
+
+const updateAccountDetails = asyncHandler(async(req,res) => {
+
+    const {fullName, email} = req.body
+
+    if(!fullName || !email){
+        throw new ApiError(400,"All fields are required")
+    }
+
+    const user = User.findByIdAndUpdate(
+        req.user?._id,
+        {
+            $set : {
+                fullName,
+                email
+            }
+        },
+        {
+            new : true
+        }
+    ).select("-password -refreshToken")
+
+    return res.status(200)
+    .json(
+        new ApiResponse(200,user,"User Updated Successfully")
+    )
+})
+
+const updateAvatar = asyncHandler(async(req,res)=>{
+
+    const avatarLocalPath = req.file?.path
+
+    if(!avatarLocalPath){
+        throw new ApiError(404,"Avatar File is missing")
+    }
+
+    const avatar = await uploadOnCloudinary(avatarLocalPath)
+
+    if(!avatar.url){
+        throw new ApiError(400,"Error with LocalPathUrl")
+    }
+
+    const user = await User.findByIdAndUpdate(
+        req.user?._id,{
+            $set : {
+                avatar : avatar.url
+            }
+        },
+        {
+            new : true
+        }
+    ).select("-password -refreshToken")
+
+    return res.status(200)
+    .json(
+        new ApiResponse(200,user,"Avatar Updated")
+    )
+})
+
+
+
+export {
+    registeruser,
+    verifyOtp,
+    loginUser,
+    logoutUser,
+    changePassword,
+    updateAvatar,
+    updateAccountDetails
+}
