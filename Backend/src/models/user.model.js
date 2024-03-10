@@ -35,6 +35,9 @@ const UserSchema = new Schema({
         type: Boolean,
         default: false,
     },
+    description : {
+        type : String
+    },
     refreshToken : {
         type : String,
     }

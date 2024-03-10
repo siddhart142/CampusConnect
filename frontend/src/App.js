@@ -5,6 +5,7 @@ import SignUp from './Components/SignUp';
 import VerificationPage from './Components/VerificationPage';
 import Login from './Components/Login';
 import Home from './Components/Home';
+import Profile from './Components/Profile';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/verify/:userId" element={<VerificationPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={<Home />}  />
+          <Route path="/profile" element={<Profile/>}/>
           {/* Add more routes as needed */}
         </Routes>
       </div>

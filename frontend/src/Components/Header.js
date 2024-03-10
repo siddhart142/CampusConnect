@@ -1,7 +1,15 @@
 import React from 'react'
 import logo from "../public/logo.png"
+import { useNavigate } from 'react-router-dom'
+
 
 const Header = () => {
+
+  const navigate = useNavigate()
+
+  const handleClick = ()=>{
+    navigate("/profile")
+  }
   return (
     <div className='grid grid-flow-col p-2 m-2 shadow-lg shadow-sky-700 border border-solid'>
       <div className='flex  col-span-4  '>
@@ -12,7 +20,7 @@ const Header = () => {
       <div className='flex col-span-8 h-24  justify-self-end'>
         <button className='p-4 m-4 text-2xl font-semibold'>Home</button>
         <button className='p-4 m-4 text-2xl font-semibold'>Announcements</button>
-        <img className='h-20 mx-4 mr-8 mt-4' src="https://cdn-icons-png.freepik.com/512/10302/10302971.png" alt="Profile"/>
+        <img className='h-20 mx-4 mr-8 mt-4' src="https://cdn-icons-png.freepik.com/512/10302/10302971.png" alt="Profile" onClick={handleClick}/>
       </div>
 
     </div>

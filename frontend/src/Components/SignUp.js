@@ -37,7 +37,7 @@ const SignUp = () => {
        try {
         
         const response = await axios.post('http://localhost:8000/api/v1/users/register',formData)
-        console.log("response from backend for register",response)
+        // console.log("response from backend for register",response)
  
          setFormData({fullName : "",
          email : "",

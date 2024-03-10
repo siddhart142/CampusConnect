@@ -146,8 +146,11 @@ const loginUser = asyncHandler(async(req,res) => {
         );
 })
 
+
+
 const logoutUser = asyncHandler(async(req,res)=> {
 
+    console.log("\nreqyest\n",req.user._id)
     try {
         const updatedUser = await User.findByIdAndUpdate(
             req.user._id,
@@ -163,6 +166,7 @@ const logoutUser = asyncHandler(async(req,res)=> {
     
         console.log('Updated User:', updatedUser);
     } catch (error) {
+        
         console.error('Update Error:', error);
     }
     
@@ -180,6 +184,24 @@ const logoutUser = asyncHandler(async(req,res)=> {
         .json(
             new ApiResponse(200, {}, "User Logged Out")
         );
+})
+
+const getCurrentUser = asyncHandler(async(req,res)=>{
+
+    console.log("\n\n\nrequest\n\n",req.user)
+
+    const user = await User.findById(req.user._id)
+
+    console.log(user)
+
+    if(!user){
+        throw new ApiError(401,"Cannot Fetch User Data")
+    }
+
+    return res.status(200)
+    .json(
+        new ApiResponse(200,user,"Data Fetched Successfully")
+    )
 })
 
 const changePassword = asyncHandler(async(req,res)=>{
@@ -276,5 +298,6 @@ export {
     logoutUser,
     changePassword,
     updateAvatar,
-    updateAccountDetails
+    updateAccountDetails,
+    getCurrentUser
 }

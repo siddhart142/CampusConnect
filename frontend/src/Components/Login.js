@@ -40,7 +40,13 @@ const Login = () => {
          email : "",
          password : ""})
 
+         document.cookie= `refreshToken= ${response?.data?.data?.refreshToken}`
+         document.cookie =`accessToken= ${response?.data?.data?.accessToken}`
+
          navigate("/home")
+
+
+         
 
         // navigate(`/verify/${response?.data?.data?._id}`)
 
@@ -115,7 +121,7 @@ const Login = () => {
           {errors.email.length>0?<span className='ml-auto mr-6 text-red-600'>{errors.email}</span>:<span></span>}
           <input className='mx-4 px-4 my-2 border border-solid w-auto h-12 rounded-full' type="text" name="password" placeholder='Enter Your Password' value = {formData.password} onChange={handleChange} />
           {errors.password.length>0?<span className='ml-auto mr-6 text-red-600'>{errors.password}</span>:<span></span>}
-          <button className='mx-4 px-4 my-2 mb-8 border border-solid w-auto h-12 rounded-full bg-blue-500 font-bold text-2xl' type = "submit"  >Sign Up</button>
+          <button className='mx-4 px-4 my-2 mb-8 border border-solid w-auto h-12 rounded-full bg-blue-500 font-bold text-2xl' type = "submit"  >Sign In</button>
         </form>
       </div>
       
