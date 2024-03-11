@@ -2,13 +2,23 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import camera from "../public/camera.gif"
 import pen from "../public/pen.gif"
-import cover from "../public/cover.png"
+
 import EditProfile from './EditProfile';
+import Education from './Forms/Education'
+import Skill from './Forms/Skill'
+import Project from './Forms/Project'
+import Experience from './Forms/Experience'
+import EditCover from './EditCover';
 const Profile = () => {
   const [userData, setUserData] = useState({});
   const [editCover,setEditCover] = useState(false)
   const [editProfile,setEditProfile] = useState(false)
-  const [isblur,setIsBlur] = useState(false)
+
+  const [addEducation, setAddEducation] = useState(false)
+  const [addSkill, setAddSkill] = useState(false)
+  const [addProject, setAddProject] = useState(false)
+  const [addExperience, setAddExperience] = useState(false)
+  
 
   const fetchData = async () => {
     try {
@@ -24,24 +34,56 @@ const Profile = () => {
     }
   };
 
+  const handleAddEducation = ()=>{
+
+    setAddEducation(true)
+    // onClose()
+  }
+  const handleAddSkill = ()=>{
+    setAddSkill(true)
+    // onClose()
+  }
+  const handleAddProject = ()=>{
+    setAddProject(true)
+    // onClose()
+  }
+  const handleAddExperience= ()=>{
+    setAddExperience(true)
+    // onClose()
+  }
+  const handleAddEducationClose = ()=>{
+
+    setAddEducation(false)
+  }
+  const handleAddSkillClose = ()=>{
+    setAddSkill(false)
+  }
+  const handleAddProjectClose = ()=>{
+    setAddProject(false)
+  }
+  const handleAddExperienceClose = ()=>{
+    setAddExperience(false)
+  }
+
+  
   const handleCoverClick = () =>{
     setEditCover(true)
-    setIsBlur(true)
+
   }
 
   const handleEditCoverClose = () => {
     setEditCover(false)
-    setIsBlur(false)
+
   }
 
   const handleAddProfileSection = () => {
     setEditProfile(true)
-    setIsBlur(true)
+
   }
 
   const handleAddProfileSectionClose = () =>{
     setEditProfile(false)
-    setIsBlur(false)
+
   }
 
   useEffect(() => {
@@ -51,7 +93,7 @@ const Profile = () => {
   return (
     <div className={`grid grid-cols-12 grid-flow-col } `}>
     <div className='col-span-3   '></div>
-      <div className={`col-span-6 flex flex-col ${isblur? 'filter blur-sm': ""}  `}>
+      <div className={`col-span-6 flex flex-col ${editCover || editProfile || addEducation || addSkill || addProject || addExperience ? 'filter blur-sm': ""}  `}>
       <div className='col-span-6 flex flex-col shadow-2xl rounded-lg  '>
         <img className='h-[600px] w-[1280px] rounded-lg' src = {userData.coverImage?userData.coverImage: "https://i.pinimg.com/236x/53/aa/af/53aaaff2bd89ab21f55db9b5bb8bd024.jpg"} alt="cover Image"/>
         <img className='h-16 w-16 ml-[1150px] -mt-[570px]  rounded-full' src={camera} alt="edit Cover" onClick={handleCoverClick}/>
@@ -64,20 +106,12 @@ const Profile = () => {
         
         </div> 
       </div>
-      {editCover && (
-            <div className='bg-white shadow-2xl rounded-xl absolute ml-[1650px] mt-96 h-[700px] w-[600px]  transform -translate-x-1/2 -translate-y-1/2 p-4 '>
-              <div className='flex flex-row   my-2 justify-around'>
-              <span className='text-2xl font-mono mr-56 from-neutral-800 '>Add Cover Image</span>
-              <span className='ml=10 text-3xl cursor-pointer' onClick={handleEditCoverClose}>X</span>
-              </div>
-              <hr className='border-2'/>
-              
-              <img className='h-[500px] w-[520px] m-6 rounded-lg' src={cover} alt="cover" />
-              <hr className='border-2'/>
-              <button className='ml-[360px] bg-blue-500 text-white py-3  px-4 m-4 font-semibold rounded-2xl' >Update Cover Image</button>
-            </div>
-          )}
-          {editProfile && <EditProfile onClose={handleAddProfileSectionClose}/>}
+      {editCover && <EditCover onClose={handleEditCoverClose}/>  }
+          {editProfile && <EditProfile onClose={handleAddProfileSectionClose} onEducation={handleAddEducation} onSkill={handleAddSkill}  onProject={handleAddProject}  onExperience={handleAddExperience}  />}
+          {addEducation && <Education onCloseForm={handleAddEducationClose}/>}
+          {addSkill && <Skill onCloseForm={handleAddSkillClose}/>}
+          {addProject && <Project onCloseForm={handleAddProjectClose}/>}
+          {addExperience && <Experience onCloseForm={handleAddExperienceClose}/>}
       <div className='col-span-3 '></div>
     </div>
     
