@@ -6,6 +6,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import otpGenerator from 'otp-generator';
 import { sendMail } from "../utils/Sendmail.js";
 import { Verification } from "./verfication.model.js";
+import { Education } from "../models/education.model.js";
 
 const grnerateAccessRefreshToken = async(userId) =>{
     try {
@@ -191,12 +192,15 @@ const getCurrentUser = asyncHandler(async(req,res)=>{
     console.log("\n\n\nrequest\n\n",req.user)
 
     const user = await User.findById(req.user._id)
+    // const Education = await Education.findOne(req.user._id)
 
     console.log(user)
 
     if(!user){
         throw new ApiError(401,"Cannot Fetch User Data")
     }
+
+    
 
     return res.status(200)
     .json(

@@ -1,9 +1,17 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import axios from 'axios';
 
-const Education = ({ onCloseForm }) => {
+const Educationform = ({ onCloseForm }) => {
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    const response = await axios.post("http://localhost:8000/api/v1/users/Education", data, {
+        withCredentials: true, // Set the withCredentials option to true
+        // other options if needed
+      });
+
+      console.log("Education",response)
+  }
 
   const months = [
     'January', 'February', 'March', 'April',
@@ -24,8 +32,8 @@ const Education = ({ onCloseForm }) => {
 
         <form className='flex flex-col m-2 text-gray-500' onSubmit={handleSubmit(onSubmit)}>
           <label className='m-1 text-2xl'>Institute*</label>
-          <input placeholder='Ex: MNNIT' className='h-10 rounded-md mb-6 border-2 border-black p-3' {...register('Institute', { required: true })} />
-          {errors.Institute && <p className='text-red-500 -mt-6 mb-6'>Please Enter the Institute Name</p>}
+          <input placeholder='Ex: MNNIT' className='h-10 rounded-md mb-6 border-2 border-black p-3' {...register('institute', { required: true })} />
+          {errors.institute && <p className='text-red-500 -mt-6 mb-6'>Please Enter the Institute Name</p>}
 
           <label className='m-1 text-2xl'>Degree</label>
           <input placeholder="Ex: Master's" className='h-10 rounded-md mb-6 border-2 border-black p-3' type='text' {...register('degree')} />
@@ -79,4 +87,4 @@ const Education = ({ onCloseForm }) => {
   );
 };
 
-export default Education;
+export default Educationform;
