@@ -38,12 +38,6 @@ const UserSchema = new Schema({
     description : {
         type : String
     },
-    education : [
-        {
-            type : Schema.Types.ObjectId,
-            ref : "Education"
-        }
-    ],
     refreshToken : {
         type : String,
     }

@@ -30,18 +30,7 @@ const addEducation = asyncHandler(async(req,res) => {
             throw new ApiError(400,"Something went wrong while creating education")
         }
     
-        const user = await User.findByIdAndUpdate(
-            owner,
-            {
-                $push : { education: newEducation._id},
-            },{
-                new : true
-            }
-        )
-    
-        if(!user){
-            throw new ApiError(404,"User Cannot be found to add Education")
-        }
+        
     
         res.status(200)
         .json(

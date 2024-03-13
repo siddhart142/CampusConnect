@@ -6,13 +6,19 @@ import pen from "../public/pen.gif"
 import EditProfile from './EditProfile';
 import Educationform from './Forms/Education.form'
 import Skill from './Forms/Skill.form'
-import Project from './Forms/Project.form'
-import Experience from './Forms/Experience.form'
+import ProjectForm from './Forms/Project.form'
+import  ExperienceForm from './Forms/Experience.form'
 import EditCover from './EditCover';
 import Education from './Education';
+import Experience from './Experience';
+import Project from './Project';
 const Profile = () => {
   const [userData, setUserData] = useState({});
-  const [userEducation,setUserEducation] = useState({})
+
+  const [userEducation,setUserEducation] = useState()
+  const [userExperience,setUserExperience] = useState()
+  const [userProject,setUserProject] = useState()
+
   const [editCover,setEditCover] = useState(false)
   const [editProfile,setEditProfile] = useState(false)
 
@@ -32,10 +38,20 @@ const Profile = () => {
         withCredentials: true
       })
 
+      const experienceData = await axios.get("http://localhost:8000/api/v1/users/getUserExperience",{
+        withCredentials: true
+      })
+
+      const projectData = await axios.get("http://localhost:8000/api/v1/users/getUserProjects",{
+        withCredentials: true
+      })
       // console.log(educationData)
       // console.log(response);
       setUserData(response?.data?.data);
       setUserEducation(educationData?.data)
+      setUserExperience(experienceData?.data)
+      setUserProject(projectData?.data)
+
       // console.log(userData)
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -99,7 +115,7 @@ const Profile = () => {
   }, []);
 
   return (
-    <div className={`grid grid-cols-12 grid-flow-col bg-gray-200 }  `}>
+    <div className={`grid grid-cols-12 grid-flow-col bg-gray-200 }   `}>
     <div className='col-span-3   '></div>
       <div className={`col-span-6 flex flex-col   ${editCover || editProfile || addEducation || addSkill || addProject || addExperience ? 'filter blur-sm': ""}  `}>
           <div className=' flex flex-col rounded-2xl bg-white border-b-8 border-t-8 '>
@@ -116,13 +132,19 @@ const Profile = () => {
           { userEducation && <div className=' flex flex-col rounded-2xl bg-white border-b-8 border-t-8'>
             <Education edData={userEducation} />
           </div> }
+          { userExperience && <div className=' flex flex-col rounded-2xl bg-white border-b-8 border-t-8'>
+            <Experience expData={userExperience} />
+          </div> }
+          { userProject && <div className=' flex flex-col rounded-2xl bg-white border-b-8 border-t-8'>
+            <Project projectData={userProject} />
+          </div> }
       </div>
       {editCover && <EditCover onClose={handleEditCoverClose}/>  }
           {editProfile && <EditProfile onClose={handleAddProfileSectionClose} onEducation={handleAddEducation} onSkill={handleAddSkill}  onProject={handleAddProject}  onExperience={handleAddExperience}  />}
           {addEducation && <Educationform onCloseForm={handleAddEducationClose}/>}
           {addSkill && <Skill onCloseForm={handleAddSkillClose}/>}
-          {addProject && <Project onCloseForm={handleAddProjectClose}/>}
-          {addExperience && <Experience onCloseForm={handleAddExperienceClose}/>}
+          {addProject && <ProjectForm onCloseForm={handleAddProjectClose}/>}
+          {addExperience && <ExperienceForm onCloseForm={handleAddExperienceClose}/>}
       <div className='col-span-3 '></div>
     </div>
     
