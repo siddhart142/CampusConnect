@@ -6,7 +6,10 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import otpGenerator from 'otp-generator';
 import { sendMail } from "../utils/Sendmail.js";
 import { Verification } from "./verfication.model.js";
+
 import { Education } from "../models/education.model.js";
+
+import { uploadOnCloudinary } from "../utils/Cloudinary.js";
 
 const grnerateAccessRefreshToken = async(userId) =>{
     try {
@@ -237,24 +240,32 @@ const changePassword = asyncHandler(async(req,res)=>{
 
 const updateAccountDetails = asyncHandler(async(req,res) => {
 
-    const {fullName, email} = req.body
+    const {fullName, headline} = req.body
 
-    if(!fullName || !email){
+    console.log(req.body)
+
+    if(!fullName || !headline){
         throw new ApiError(400,"All fields are required")
     }
 
-    const user = User.findByIdAndUpdate(
+    const user = await User.findByIdAndUpdate(
         req.user?._id,
         {
             $set : {
                 fullName,
-                email
+                headline
             }
         },
         {
             new : true
         }
     ).select("-password -refreshToken")
+
+    if(!user){
+        throw new ApiError(404,"User not found")
+    }
+
+    console.log("details ",user)
 
     return res.status(200)
     .json(
@@ -293,7 +304,36 @@ const updateAvatar = asyncHandler(async(req,res)=>{
     )
 })
 
+const updateCover = asyncHandler(async(req,res)=>{
 
+    const coverImageLocalPath = req.file?.path
+
+    if(!coverImageLocalPath){
+        throw new ApiError(404,"CoverImage File is missing")
+    }
+
+    const coverImage = await uploadOnCloudinary(coverImageLocalPath)
+
+    if(!coverImage.url){
+        throw new ApiError(400,"Error with LocalPathUrl")
+    }
+
+    const user = await User.findByIdAndUpdate(
+        req.user?._id,{
+            $set : {
+                coverImage : coverImage.url
+            }
+        },
+        {
+            new : true
+        }
+    ).select("-password -refreshToken")
+
+    return res.status(200)
+    .json(
+        new ApiResponse(200,user,"Avatar Updated")
+    )
+})
 
 export {
     registeruser,
@@ -303,5 +343,6 @@ export {
     changePassword,
     updateAvatar,
     updateAccountDetails,
-    getCurrentUser
+    getCurrentUser,
+    updateCover
 }

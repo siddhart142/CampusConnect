@@ -38,6 +38,10 @@ const UserSchema = new Schema({
     description : {
         type : String
     },
+    headline : {
+        type : String,
+        default : "Write your headline"
+    },
     refreshToken : {
         type : String,
     }
