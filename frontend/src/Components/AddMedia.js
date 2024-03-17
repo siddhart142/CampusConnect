@@ -5,6 +5,7 @@ import { useRef, useState } from 'react';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from 'react-slick';
+import axios from "axios"
 
 const AddMedia = ({onClose}) => {
     const fileInputRef = useRef(null);
@@ -44,8 +45,17 @@ const AddMedia = ({onClose}) => {
         }
     };
 
-    const handleSubmit = () => {
-        
+    const handleSubmit = async() => {
+        const formData = new FormData();
+        formData.append("desc", textArea);
+        selectedFile.forEach((file) => {
+            formData.append("images", file);
+        });
+        const response = await axios.post("http://localhost:8000/api/v1/users/post",formData,{
+            withCredentials: true
+          }) 
+
+          console.log(response)
     }
 
 

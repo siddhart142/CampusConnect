@@ -16,7 +16,7 @@ const postSchema = new Schema({
         }
     ]
 },{
-    timeseries : true
+     timestamps : true,
 })
 
 export const Post = mongoose.model("Post",postSchema)

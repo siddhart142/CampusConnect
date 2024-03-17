@@ -7,8 +7,6 @@ import otpGenerator from 'otp-generator';
 import { sendMail } from "../utils/Sendmail.js";
 import { Verification } from "./verfication.model.js";
 
-import { Education } from "../models/education.model.js";
-
 import { uploadOnCloudinary } from "../utils/Cloudinary.js";
 
 const grnerateAccessRefreshToken = async(userId) =>{
