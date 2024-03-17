@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { toggleProject } from '../../utlis/projectSlice';
 
-const ProjectForm = ({ onCloseForm }) => {
+const ProjectForm = () => {
+  
   const { register, handleSubmit, formState: { errors } } = useForm();
   // const [currentlyWorking,setCurrentlyWorking] = useState(false)
-
+  const dispatch = useDispatch()
 
   const onSubmit = async (data) => {
+    dispatch(toggleProject)
     console.log("Submitting data:", data);
     
     try {
@@ -29,7 +33,9 @@ const ProjectForm = ({ onCloseForm }) => {
     'September', 'October', 'November', 'December'
   ];
 
- 
+  const handleClick = ()=>{
+    dispatch(toggleProject())
+  }
 
   const years = Array.from({ length: 100 }, (_, index) => (new Date().getFullYear() - index).toString());
 
@@ -37,7 +43,7 @@ const ProjectForm = ({ onCloseForm }) => {
     <div className={`bg-white shadow-2xl rounded-xl absolute ml-[1650px] mt-96  w-[900px] transform -translate-x-1/2 -translate-y-1/2 p-4`}>
       <div className='flex flex-row my-2 justify-between border-b-4 p-3 border-zinc-300'>
         <button className='text-3xl font-mono mr-56 from-neutral-800 font-bold '>Add Experience</button>
-        <button className='text-3xl font-bold' onClick={onCloseForm}>X</button>
+        <button className='text-3xl font-bold' onClick={handleClick}>X</button>
       </div>
       <div className='flex flex-col '>
         <span className='m-4 text-gray-500'>* Indicates required </span>

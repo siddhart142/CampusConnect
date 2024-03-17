@@ -1,25 +1,24 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { toggleEducation } from '../utlis/educationSlice'
+import { toggleExperience } from '../utlis/experienceSlice'
+import { toggleProject } from '../utlis/projectSlice'
 
+const EditProfile = ({onClose,onSkill}) => {
 
-const EditProfile = ({onClose,onEducation,onSkill,onProject,onExperience}) => {
-
-  
+  const dispatch = useDispatch()
   const handleAddEducation = ()=>{
-
-    onEducation()
-    onClose()
+   dispatch(toggleEducation())
   }
   const handleAddSkill = ()=>{
     onSkill()
     onClose()
   }
   const handleAddProject = ()=>{
-    onProject()
-    onClose()
+    dispatch(toggleProject())
   }
   const handleAddExperience= ()=>{
-    onExperience()
-    onClose()
+    dispatch(toggleExperience())
   }
 
   

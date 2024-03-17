@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import camera from "../public/camera.gif"
 import pen from "../public/pen.gif"
 
+import {useDispatch,useSelector } from 'react-redux';
+
 import EditProfile from './EditProfile';
 import Educationform from './Forms/Education.form'
 import Skill from './Forms/Skill.form'
@@ -13,90 +15,67 @@ import Education from './Education';
 import Experience from './Experience';
 import Project from './Project';
 import EditAvatar from './EditAvatar';
-const Profile = () => {
-  const [userData, setUserData] = useState({});
 
-  const [userEducation,setUserEducation] = useState()
-  const [userExperience,setUserExperience] = useState()
-  const [userProject,setUserProject] = useState()
+// import { postExperience } from '../utlis/experienceSlice';
+// import { postProject } from '../utlis/projectSlice';
+import { postUser } from '../utlis/userSlice';
+// import store from '../utlis/store';
+
+
+const Profile = () => {
+
+  const dispatch =  useDispatch()
+  const user = useSelector((store)=>store.user)
+  const addEducation = useSelector((store)=>store.education.addEducation)
+  const addExperience = useSelector((store)=>store.experience.addExperience)
+  const addProject = useSelector((store)=>store.project.addProject)
+
   const [fullName,setfullName] = useState("")
   const [headline,setHeadline] = useState("")
+  const [userData,setUserData] = useState()
 
   const [editCover,setEditCover] = useState(false)
   const [editProfile,setEditProfile] = useState(false)
   const [editAvatar,setEditAvatar] = useState(false)
   const [editIntro,setEditIntro] = useState(false)
 
-  const [addEducation, setAddEducation] = useState(false)
   const [addSkill, setAddSkill] = useState(false)
-  const [addProject, setAddProject] = useState(false)
-  const [addExperience, setAddExperience] = useState(false)
-  
 
   const fetchData = async () => {
-    try {
-      const response = await axios.get("http://localhost:8000/api/v1/users/getUserDetails", {
-        withCredentials: true, // Set the withCredentials option to true
-        // other options if needed
-      });
-      const educationData = await axios.get("http://localhost:8000/api/v1/users/getUserEducation",{
+   
+    try{
+      if(!user.length){
+        const resp =  await axios.get("http://localhost:8000/api/v1/users/getUserDetails",{
         withCredentials: true
       })
-
-      const experienceData = await axios.get("http://localhost:8000/api/v1/users/getUserExperience",{
-        withCredentials: true
-      })
-
-      const projectData = await axios.get("http://localhost:8000/api/v1/users/getUserProjects",{
-        withCredentials: true
-      })
-      // console.log(educationData)
-      // console.log(response);
-      setUserData(response?.data?.data);
-      setUserEducation(educationData?.data)
-      setUserExperience(experienceData?.data)
-      setUserProject(projectData?.data)
-
-      console.log("userdata", userData)
+      dispatch(postUser(resp.data?.data))
+      setUserData(resp.data?.data)
+    }else{
+      setUserData(user)
+    }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
-  const handleAddEducation = ()=>{
 
-    setAddEducation(true)
-    // onClose()
-  }
   const handleAddSkill = ()=>{
     setAddSkill(true)
     // onClose()
   }
-  const handleAddProject = ()=>{
-    setAddProject(true)
-    // onClose()
-  }
-  const handleAddExperience= ()=>{
-    setAddExperience(true)
-    // onClose()
-  }
-  const handleAddEducationClose = ()=>{
 
-    setAddEducation(false)
-  }
   const handleAddSkillClose = ()=>{
     setAddSkill(false)
   }
-  const handleAddProjectClose = ()=>{
-    setAddProject(false)
-  }
-  const handleAddExperienceClose = ()=>{
-    setAddExperience(false)
-  }
+ 
 
   
   const handleCoverClick = () =>{
     setEditCover(true)
+
+  }
+  const handleEditCoverClose = () => {
+    setEditCover(false)
 
   }
 
@@ -108,10 +87,7 @@ const Profile = () => {
     setEditAvatar(false)
   }
 
-  const handleEditCoverClose = () => {
-    setEditCover(false)
-
-  }
+  
 
   const handleAddProfileSection = () => {
     setEditProfile(true)
@@ -140,15 +116,10 @@ const Profile = () => {
   }
 
   const handleIntroSave = async() =>{
-
-    console.log(fullName,headline)
-
     const postData = {
       "fullName" : fullName,
       "headline" : headline
     }
-
-    console.log(postData)
     const response = await axios.post("http://localhost:8000/api/v1/users/updatedata", postData,  {
         withCredentials: true, // Set the withCredentials option to true
         // other options if needed
@@ -158,8 +129,7 @@ const Profile = () => {
 
         
       });
-      console.log("profile",response)
-
+      dispatch(postUser(response?.data?.data))
       setEditIntro(false)
   }
 
@@ -167,6 +137,7 @@ const Profile = () => {
     fetchData();
   }, []);
 
+  if(!userData) return null
   return (
     <div className={`grid grid-cols-12 grid-flow-col bg-gray-200 }   `}>
     <div className='col-span-3   '></div>
@@ -184,23 +155,23 @@ const Profile = () => {
             <button className='w-44 p-2 m-4 bg-white border border-blue-500 text-blue-500 font-bold rounded-2xl hover:bg-blue-500 hover:border-white hover:text-white' onClick={handleAddProfileSection}>Add Profile Section</button>
           </div>
 
-          { userEducation && <div className=' flex flex-col rounded-2xl bg-white border-b-8 border-t-8'>
-            <Education edData={userEducation} />
-          </div> }
-          { userExperience && <div className=' flex flex-col rounded-2xl bg-white border-b-8 border-t-8'>
-            <Experience expData={userExperience} />
-          </div> }
-          { userProject && <div className=' flex flex-col rounded-2xl bg-white border-b-8 border-t-8'>
-            <Project projectData={userProject} />
-          </div> }
+         <div className=' flex flex-col rounded-2xl bg-white border-b-8 border-t-8'>
+            <Education  />
+          </div>
+          <div className=' flex flex-col rounded-2xl bg-white border-b-8 border-t-8'>
+            <Experience />
+          </div> 
+           <div className=' flex flex-col rounded-2xl bg-white border-b-8 border-t-8'>
+            <Project  />
+          </div>
       </div>
       {editAvatar && <EditAvatar onClose={handleEditAvatarClose}/>  }
       {editCover && <EditCover onClose={handleEditCoverClose}/>  }
-          {editProfile && <EditProfile onClose={handleAddProfileSectionClose} onEducation={handleAddEducation} onSkill={handleAddSkill}  onProject={handleAddProject}  onExperience={handleAddExperience}  />}
-          {addEducation && <Educationform onCloseForm={handleAddEducationClose}/>}
+          {editProfile && <EditProfile onClose={handleAddProfileSectionClose} onSkill={handleAddSkill}   />}
+          {addEducation && <Educationform />}
           {addSkill && <Skill onCloseForm={handleAddSkillClose}/>}
-          {addProject && <ProjectForm onCloseForm={handleAddProjectClose}/>}
-          {addExperience && <ExperienceForm onCloseForm={handleAddExperienceClose}/>}
+          {addProject && <ProjectForm />}
+          {addExperience && <ExperienceForm />}
       <div className='col-span-3 '></div>
     </div>
     

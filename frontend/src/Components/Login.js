@@ -43,7 +43,7 @@ const Login = () => {
          document.cookie= `refreshToken= ${response?.data?.data?.refreshToken}`
          document.cookie =`accessToken= ${response?.data?.data?.accessToken}`
 
-         navigate("/home")
+         navigate("/")
 
 
          

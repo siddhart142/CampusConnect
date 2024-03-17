@@ -4,7 +4,7 @@ const userSlice = createSlice({
 
     name : "user",
     initialState : {
-
+        
     },
     reducers : {
         postUser : (state,action) =>{
@@ -13,5 +13,5 @@ const userSlice = createSlice({
     }
 })
 
-export const {postUser} = userSlice.action;
+export const {postUser} = userSlice.actions;
 export default userSlice.reducer;

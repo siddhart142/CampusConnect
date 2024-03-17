@@ -6,9 +6,11 @@ import VerificationPage from './Components/VerificationPage';
 import Login from './Components/Login';
 import Home from './Components/Home';
 import Profile from './Components/Profile';
-
+import { Provider } from 'react-redux';
+import store from './utlis/store';
 function App() {
   return (
+    <Provider store={store}>
     <Router>
       <div>
         {/* Your common components can go here */}
@@ -24,6 +26,7 @@ function App() {
         </Routes>
       </div>
     </Router>
+    </Provider>
   );
 }
 

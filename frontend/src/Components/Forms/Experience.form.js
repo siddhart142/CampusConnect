@@ -3,13 +3,16 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useState } from 'react';
 // import ExperienceForm from './Project.form';
+import { toggleExperience } from '../../utlis/experienceSlice';
+import { useDispatch } from 'react-redux';
 
-const ExperienceForm = ({ onCloseForm }) => {
+const ExperienceForm = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [currentlyWorking,setCurrentlyWorking] = useState(false)
-
+  const dispatch = useDispatch()
 
   const onSubmit = async (data) => {
+    dispatch(toggleExperience())
     const response = await axios.post("http://localhost:8000/api/v1/users/Experience", data, {
         withCredentials: true, // Set the withCredentials option to true
         // other options if needed
@@ -27,6 +30,9 @@ const ExperienceForm = ({ onCloseForm }) => {
   // const handleCurrentlyWorking = (e)=>{
   //   setCurrentlyWorking(e.target.checked)
   // }
+  const handleClick = ()=>{
+    dispatch(toggleExperience())
+  }
 
   const years = Array.from({ length: 100 }, (_, index) => (new Date().getFullYear() - index).toString());
 
@@ -34,7 +40,7 @@ const ExperienceForm = ({ onCloseForm }) => {
     <div className={`bg-white shadow-2xl rounded-xl absolute ml-[1650px] mt-96  w-[900px] transform -translate-x-1/2 -translate-y-1/2 p-4`}>
       <div className='flex flex-row my-2 justify-between border-b-4 p-3 border-zinc-300'>
         <button className='text-3xl font-mono mr-56 from-neutral-800 font-bold '>Add Experience</button>
-        <button className='text-3xl font-bold' onClick={onCloseForm}>X</button>
+        <button className='text-3xl font-bold' onClick={handleClick}>X</button>
       </div>
       <div className='flex flex-col '>
         <span className='m-4 text-gray-500'>* Indicates required </span>

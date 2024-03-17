@@ -1,16 +1,24 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { toggleEducation } from '../../utlis/educationSlice'; 
 
-const Educationform = ({ onCloseForm }) => {
+const Educationform = () => {
+  const dispatch = useDispatch()
   const { register, handleSubmit, formState: { errors } } = useForm();
   const onSubmit = async (data) => {
+    dispatch(toggleEducation())
     const response = await axios.post("http://localhost:8000/api/v1/users/Education", data, {
         withCredentials: true, // Set the withCredentials option to true
         // other options if needed
       });
 
       console.log("Education",response)
+  }
+
+  const handleClick = ()=>{
+    dispatch(toggleEducation())
   }
 
   const months = [
@@ -25,7 +33,7 @@ const Educationform = ({ onCloseForm }) => {
     <div className={`bg-white shadow-2xl rounded-xl absolute ml-[1650px] mt-96 ${errors ? 'h-[950px]' : 'h-[900px]'} w-[900px] transform -translate-x-1/2 -translate-y-1/2 p-4`}>
       <div className='flex flex-row my-2 justify-around border-b-4 p-3 border-zinc-300'>
         <button className='text-3xl font-mono mr-56 from-neutral-800 font-bold '>Add Education</button>
-        <button className='text-3xl font-bold' onClick={onCloseForm}>X</button>
+        <button className='text-3xl font-bold' onClick={handleClick}>X</button>
       </div>
       <div className='flex flex-col '>
         <span className='m-4 text-gray-500'>* Indicates required </span>

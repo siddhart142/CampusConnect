@@ -1,7 +1,12 @@
 import React, { useRef, useState } from 'react'
 import cover from "../public/cover.png"
 import axios from 'axios';
+import { postUser } from '../utlis/userSlice';
+import { useDispatch } from 'react-redux';
 const EditCover = ({onClose}) => {
+
+  
+  const dispatch = useDispatch()
 
   const fileInputRef = useRef(null);
   const [selectedFile,setSelectedFile] = useState(null)
@@ -31,6 +36,8 @@ const EditCover = ({onClose}) => {
           "Content-Type": "multipart/form-data",
         },
       });
+
+      dispatch(postUser(response.data?.data))
   }
 
   return (
