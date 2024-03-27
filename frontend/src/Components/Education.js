@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import pen from "../public/pen.gif";
+import pen from "../public/pen.png";
 import { useDispatch, useSelector } from 'react-redux';
 import { postEducation, toggleEducation } from '../utlis/educationSlice';
 import axios from 'axios';
@@ -7,13 +7,16 @@ import axios from 'axios';
 const Education = () => {
   const dispatch = useDispatch()
   const userEducation = useSelector((store) => store.education.education)
-  console.log("ed ",userEducation)
-
+  console.log("userEducation",userEducation)
   const fetchData = async() => {
+
+    // console.log(userEducation.length)
+    if(userEducation.length) return;
     const educationData = await axios.get("http://localhost:8000/api/v1/users/getUserEducation",{
         withCredentials: true
       })
-
+      console.log("dispatchhua")
+      // if(userEducation.length) return
       dispatch(postEducation(educationData?.data?.data))
   }
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { toggleEducation } from '../../utlis/educationSlice'; 
+import { postEducation, toggleEducation } from '../../utlis/educationSlice'; 
 
 const Educationform = () => {
   const dispatch = useDispatch()
@@ -13,7 +13,7 @@ const Educationform = () => {
         withCredentials: true, // Set the withCredentials option to true
         // other options if needed
       });
-
+      dispatch(postEducation(response.data.data))
       console.log("Education",response)
   }
 

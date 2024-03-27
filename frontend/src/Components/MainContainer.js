@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import media from "../public/media.png"
 import announcements from "../public/announcements.png"
 import job from "../public/job.png"
 import Post from './Post'
-import { UseSelector } from 'react-redux'
+import { UseSelector, useSelector } from 'react-redux'
 import AddMedia from './AddMedia'
+import axios from 'axios'
 
 
 const MainContainer = () => {
@@ -13,6 +14,8 @@ const MainContainer = () => {
     const [announcementPost,setAnnouncement] = useState(false)
     const [jobPost,setJob] = useState(false)
 
+    const userPosts = useSelector((store) =>store.post.posts) 
+    // console.log("userPosts",userPosts)
 
     const handleMedia = () => {
         setMedia(!mediaPost)
@@ -25,6 +28,15 @@ const MainContainer = () => {
     const handleJobs = () => {
         setJob(!jobPost)
     }
+
+    const fetchData = async()=>{
+
+        const response = await axios.get("")
+    }
+
+    useEffect(()=>{
+        fetchData()
+    },[])
     
   return (
     <div className='flex flex-col mt-10'>
@@ -40,10 +52,7 @@ const MainContainer = () => {
             </div>
         </div>
         <div>
-            <Post/>
-            <Post/>
-            <Post/>
-            <Post/>
+            {userPosts.map((data) => <Post key={data._id} postData={data} />)}
         </div>
 
         {mediaPost && <div className='absolute ml-[150px] mt-20 rounded-2xl w-[800px] bg-white m-4 shadow-2xl'>

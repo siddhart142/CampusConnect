@@ -7,7 +7,7 @@ import { addEducation, getUserEducation } from "../controllers/education.control
 import { verifyJwt } from "../middlewares/auth.middleware.js"
 import { addExperience, getUserExperience } from "../controllers/experience.controller.js"
 import { addProject, getProject } from "../controllers/project.controller.js"
-import { createPost } from "../controllers/post.controller.js"
+import { createPost, getPost } from "../controllers/post.controller.js"
 
 const router = Router()
 
@@ -47,4 +47,7 @@ router.route("/post").post( upload.fields([
         maxCount: 10 // Maximum number of files allowed for the avatar
     },
 ]),verifyJwt,createPost)
+
+router.route("/post").get(verifyJwt,getPost)
+
 export default router

@@ -2,11 +2,8 @@ import React, { useState } from 'react';
 import logo from "../public/logo.png";
 import google from "../public/google.png";
 import axios from 'axios';
-// import {useHistory} from "react-router-dom"
+
 import { useNavigate } from 'react-router-dom';
-
-
-
 
 const Login = () => {
 
@@ -44,27 +41,17 @@ const Login = () => {
          document.cookie =`accessToken= ${response?.data?.data?.accessToken}`
 
          navigate("/")
-
-
-         
-
-        // navigate(`/verify/${response?.data?.data?._id}`)
-
        } catch (error) {
             console.log(error.message)
             throw error
-       }
-
-        // history.push('/verify')
-        // <Navigate to="/verify" replace={true} />
-       
+       }       
     }
 
     const handleChange = async(e) => {
 
 
         const { name , value } = e.target
-        // console.log(e.target.value)
+
         setFormData({
             ...formData,
             [name] : value,

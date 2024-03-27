@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useState } from 'react';
 // import ExperienceForm from './Project.form';
-import { toggleExperience } from '../../utlis/experienceSlice';
+import { postExperience, toggleExperience } from '../../utlis/experienceSlice';
 import { useDispatch } from 'react-redux';
 
 const ExperienceForm = () => {
@@ -18,7 +18,7 @@ const ExperienceForm = () => {
         // other options if needed
       });
 
-      console.log("Exp ",response)
+      dispatch(postExperience(response.data.data))
   }
 
   const months = [

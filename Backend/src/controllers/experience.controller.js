@@ -56,6 +56,7 @@ const getUserExperience = asyncHandler(async(req,res)=>{
         //   });
 
         // console.log("Education",education)
+        // console.log(exp)
         if (!exp) {
         throw new ApiError(400, "Could not get User's Experience");
     }
