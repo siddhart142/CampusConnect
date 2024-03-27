@@ -99,6 +99,7 @@ const verifyOtp = asyncHandler(async (req, res) => {
         await user.save({ validateBeforeSave: false });
         await Verification.deleteMany({owner:user._id})
     }
+    
 
     res
     .status(200)
